@@ -7,7 +7,7 @@ import movieTrailer from "movie-trailer";
 const base_url = "https://image.tmdb.org/t/p/original";
 const Row = ({ title, fetchUrl, isLargeRow }) => {
   const [movies, setMovies] = useState([]);
-  const [trailerUrl,setTrailerUrl] = useState("");
+  const [trailerUrl, setTrailerUrl] = useState("");
 
   useEffect(() => {
     //
@@ -20,30 +20,31 @@ const Row = ({ title, fetchUrl, isLargeRow }) => {
     fetchData();
   }, [fetchUrl]);
 
-  const opts= {
-    height : "390",
-    width : "100%",
-    playerVars : {
-      autoplay : 1
+  const opts = {
+    height: "390",
+    width: "100%",
+    playerVars: {
+      autoplay: 1,
     },
   };
 
   const handleClick = async (movie) => {
-    if(trailerUrl){
-      setTrailerUrl('');
-    }else{
+    if (trailerUrl) {
+      setTrailerUrl("");
+    } else {
       movieTrailer(movie?.name || "")
-      .then(url => {
-        const urlParams =new URLSearchParams( new URL(url).search);
-        setTrailerUrl(urlParams.get('v'));
-      }).catch(error => console.log(error))
+        .then((url) => {
+          const urlParams = new URLSearchParams(new URL(url).search);
+          setTrailerUrl(urlParams.get("v"));
+        })
+        .catch((error) => console.log(error));
     }
-  //   let trailerurl = await axios.get(
-  //     `/movie/${movie.id}/videos?api_key=337fd9592a61effadecde4cb1bc0aaaa`
-  //   );
-  //   setTrailerUrl(trailerurl.data.results[0]?.key);
-  // }
-  }
+    //   let trailerurl = await axios.get(
+    //     `/movie/${movie.id}/videos?api_key=337fd9592a61effadecde4cb1bc0aaaa`
+    //   );
+    //   setTrailerUrl(trailerurl.data.results[0]?.key);
+    // }
+  };
 
   //console.table(movies);
   return (
@@ -54,7 +55,7 @@ const Row = ({ title, fetchUrl, isLargeRow }) => {
           (movie) =>
             movie.bacdrop_path !== null && (
               <img
-              onClick={()=> handleClick(movie)}
+                onClick={() => handleClick(movie)}
                 key={movie.id}
                 className={`row_poster ${isLargeRow && "row_posterLarge"}`}
                 src={`${base_url}${
@@ -65,7 +66,7 @@ const Row = ({ title, fetchUrl, isLargeRow }) => {
             )
         )}
       </div>
-      {trailerUrl && <YouTube videoId = {trailerUrl} opts={opts} />}
+      {trailerUrl && <YouTube videoId={trailerUrl} opts={opts} />}
     </div>
   );
 };
